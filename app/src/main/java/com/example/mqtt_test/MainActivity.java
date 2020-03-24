@@ -3,13 +3,17 @@ package com.example.mqtt_test;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +25,7 @@ import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
+import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -29,42 +34,57 @@ public class MainActivity extends AppCompatActivity {
     private ImageView img_1;
     private TextView text_1;
     private EditText edit_1;
+    private Spinner spin_1;
     private String host = "tcp://47.113.104.120:1883";
     private String userName = "android";
     private String passWord = "android";
-    private String mqtt_id = "1612147452"; //定义成自己的QQ号  切记！不然会掉线！！！
-    private String mqtt_sub_topic = "1612147452"; //为了保证你不受到别人的消息  哈哈
-    private String mqtt_pub_topic = "1612147452"; //为了保证你不受到别人的消息  哈哈  自己QQ好后面加 _PC
+    private String mqtt_id = "mix3"; //定义成自己的QQ号  切记！不然会掉线！！！
+    private String mqtt_sub_topic = "mix3/test"; //为了保证你不受到别人的消息  哈哈
+    private String mqtt_pub_topic = "test"; //为了保证你不受到别人的消息  哈哈  自己QQ好后面加 _PC
     private ScheduledExecutorService scheduler;
     private MqttClient client;
     private MqttConnectOptions options;
     private Handler handler;
+    static long spin_id = 0;
+
     @SuppressLint("HandlerLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         bu_1 = findViewById(R.id.bu_1);
         bu_1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(MainActivity.this,"Hello!",Toast.LENGTH_SHORT).show();
+
             }
         });
+
         edit_1 = findViewById(R.id.edit_1);
 
-        img_1 = findViewById(R.id.img_1);
-        img_1.setOnClickListener(new View.OnClickListener() {
+
+        text_1 = findViewById(R.id.text_1);
+/*
+        Resources res = getResources();
+        String[] spin_list = res.getStringArray(R.array.res_spin);//把res_spin的内容添加到数组中
+        spin_1 = (Spinner) findViewById(R.id.spin_1);
+        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, spin_list);
+        spin_1.setAdapter(adapter);
+        spin_1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View v) {
-                final String edit_text=edit_1.getText().toString();
-                Toast.makeText(MainActivity.this,edit_text,Toast.LENGTH_SHORT).show();
-                publishmessageplus(mqtt_pub_topic,edit_text);
-                //text_1.setText("我是新的内容");
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Toast.makeText(MainActivity.this,"你选择了" + id,Toast.LENGTH_SHORT).show();
+                spin_id = id;
+                Mqtt_init();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
-        text_1 = findViewById(R.id.text_1);
-
+*/
 
         Mqtt_init();
         startReconnect();
@@ -88,11 +108,11 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 31:   //连接成功
                         Toast.makeText(MainActivity.this,"连接成功" ,Toast.LENGTH_SHORT).show();
-                        try {
-                            client.subscribe(mqtt_sub_topic,1);//java库 订阅
-                        } catch (MqttException e) {
-                            e.printStackTrace();
-                        }
+                          try {
+                             client.subscribe(mqtt_sub_topic,1);//java库 订阅
+                          } catch (MqttException e) {
+                    e.printStackTrace();
+                }
                         break;
                     default:
                         break;
@@ -187,6 +207,8 @@ public class MainActivity extends AppCompatActivity {
         MqttMessage message = new MqttMessage();
         message.setPayload(message2.getBytes());
         try {
+
+
             client.publish(topic,message);
         } catch (MqttException e) {
 
@@ -194,3 +216,4 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 }
+

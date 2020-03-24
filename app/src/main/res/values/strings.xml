@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">MQTT_test</string>
+    <string-array name="res_spin">
+        <item>设备一</item>
+        <item>设备二</item>
+        <item>设备三</item>
+    </string-array>
 </resources>
