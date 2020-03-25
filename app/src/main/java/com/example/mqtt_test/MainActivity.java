@@ -55,24 +55,25 @@ public class MainActivity extends AppCompatActivity {
     private MqttConnectOptions options;
     private Handler handler;
     static long spin_id = 0;
+    private int mqtt_connect_symbol = 0;
+    private int mqtt_connect_symbol_temp = 0;
     String[] string = new String[]{
             "未连接",
             "已连接"
     };
-    TextSwitcher textSwitcher;
-    int curStr ;
-    Handler mhandler = new Handler(){
-        @Override
-        public void handleMessage(Message msg) {
-            next(null);
-        }
+    private TextSwitcher mTextSwicher = null;
+    private String[] mContext = {
+            "未连接",
+            "已连接"
     };
+    private int mIndex = 0;
 
     @SuppressLint("HandlerLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         bu_1 = findViewById(R.id.bu_1);
         bu_1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,9 +83,25 @@ public class MainActivity extends AppCompatActivity {
         });
 
         edit_1 = findViewById(R.id.edit_1);
-
-
         text_1 = findViewById(R.id.text_1);
+
+        mTextSwicher = (TextSwitcher) findViewById(R.id.textSWitcher_1);
+        mTextSwicher .setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                TextView tv = new TextView(MainActivity.this);
+                tv.setTextSize(20);
+                tv.setTextColor(Color.GREEN);
+                return tv;
+            }
+        });
+
+        mTextSwicher.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(MainActivity.this,mContext[mqtt_connect_symbol],Toast.LENGTH_SHORT).show();
+            }
+        });
 /*
         Resources res = getResources();
         String[] spin_list = res.getStringArray(R.array.res_spin);//把res_spin的内容添加到数组中
@@ -104,32 +121,7 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-*/
-        textSwitcher = (TextSwitcher) findViewById(R.id.textSWitcher_1);
-        textSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
-            @Override
-            public View makeView() {
-                TextView textView = new TextView(MainActivity.this);
-                textView.setTextSize(10);
-                textView.setTextColor(Color.YELLOW);
-                return textView;
-            }
-        });
-        new Thread() {
-            @Override
-            public void run() {
-                while (true) {
-                    Message message = mhandler.obtainMessage();
-                    message.obj = 0;
-                    mhandler.sendMessage(message);
-                    try {
-                        sleep(1000);
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        }.start();
+        */
         changeStatusBarTextImgColor(true);
 //*****************************************************************************************************************************************************
         Mqtt_init();
@@ -151,9 +143,13 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case 30:  //连接失败
                         Toast.makeText(MainActivity.this, "连接失败", Toast.LENGTH_SHORT).show();
+                        mqtt_connect_symbol = 0;
+                        mTextSwicher.setText(mContext[0]);
                         break;
                     case 31:   //连接成功
                         Toast.makeText(MainActivity.this, "连接成功", Toast.LENGTH_SHORT).show();
+                        mqtt_connect_symbol = 1;
+                        mTextSwicher.setText(mContext[1]);
                         try {
                             client.subscribe(mqtt_sub_topic, 1);//java库 订阅
                         } catch (MqttException e) {
@@ -167,9 +163,9 @@ public class MainActivity extends AppCompatActivity {
         };
     }
 
-    private void next(View scource){
-        textSwitcher.setText(string[curStr = ( curStr++ % string.length )]);
-    }
+  /*  private void next(View scource){
+        textSwitcher.setText(string[mqtt_connect_symbol]);
+    }*/
 
     private void Mqtt_init() {
         try {
