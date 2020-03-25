@@ -5,18 +5,29 @@
     android:layout_height="40dp"
     android:background="@color/colorPrimary"
     android:orientation="horizontal">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/back_cat">
+
+    </ImageView>
     <TextView
         android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_weight="7"
+        android:gravity="center_vertical"
+        android:layout_weight="6"
         android:text="MQTT调试"
-        android:textSize="20dp" >
+        android:textStyle="bold"
+        android:textSize="15dp" >
     </TextView>
+
     <TextSwitcher
         android:id="@+id/textSWitcher_1"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_height="30dp"
         android:layout_weight="3"
         android:inAnimation="@anim/in_animation"
         android:outAnimation="@anim/out_animation"

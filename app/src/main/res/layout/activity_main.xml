@@ -7,12 +7,13 @@
     tools:context=".MainActivity">
     <include android:id="@+id/activity_title"
         layout="@layout/include_activity_title"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:layout_editor_absoluteX="-43dp"
-        tools:layout_editor_absoluteY="-16dp">
+        tools:layout_editor_absoluteX="43dp"
+        tools:layout_editor_absoluteY="16dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -20,48 +21,83 @@
             android:layout_marginTop="30dp"
             android:orientation="vertical">
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:orientation="vertical"
+                android:background="#c2ccd0"
+                android:layout_marginTop="20dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="接收到："
+                    android:textSize="10dp">
+
+                </TextView>
+
+                <TextView
+                    android:id="@+id/text_1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:text=""
+                    android:textSize="20dp">
+
+                </TextView>
+
+            </LinearLayout>
+            <EditText
+                android:id="@+id/edit_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:hint="订阅的主题">
+
+               </EditText>
             <Button
-                android:id="@+id/bu_1"
+                android:id="@+id/bu_2"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="测试">
+                android:layout_margin="10dp"
+                android:layout_gravity="center_horizontal"
+                android:text="订阅"
+                android:background="#f3f9f1">
 
             </Button>
-
-            <TextView
-                android:id="@+id/text_1"
-                android:layout_width="wrap_content"
+            <EditText
+                android:id="@+id/edit_2"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="我是初始内容">
+                android:layout_marginTop="20dp"
+                android:hint="主题">
 
-            </TextView>
+            </EditText>
 
             <EditText
                 android:id="@+id/edit_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="输入发送的内容">
+                android:layout_marginTop="20dp"
+                android:hint="主题的内容">
 
             </EditText>
-            <LinearLayout
-                android:layout_width="match_parent"
+
+            <Button
+                android:id="@+id/bu_1"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="选择设备">
+                android:layout_margin="10dp"
+                android:layout_gravity="center_horizontal"
+                android:text="发送"
+                android:background="#f3f9f1">
 
-                </TextView>
-                <Spinner
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/spin_1"
-                    android:entries="@array/res_spin"
-                    android:layout_gravity="center">
+            </Button>
 
-                </Spinner>
-            </LinearLayout>
         </LinearLayout>
 
     </LinearLayout>
