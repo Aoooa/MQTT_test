@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
@@ -17,8 +18,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextSwitcher;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.MqttCallback;
@@ -32,6 +35,9 @@ import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+
+
+
 public class MainActivity extends AppCompatActivity {
     private Button bu_1;
     private ImageView img_1;
@@ -49,19 +55,24 @@ public class MainActivity extends AppCompatActivity {
     private MqttConnectOptions options;
     private Handler handler;
     static long spin_id = 0;
+    String[] string = new String[]{
+            "未连接",
+            "已连接"
+    };
+    TextSwitcher textSwitcher;
+    int curStr ;
+    Handler mhandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            next(null);
+        }
+    };
 
     @SuppressLint("HandlerLeak")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
-            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        } else {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
         bu_1 = findViewById(R.id.bu_1);
         bu_1.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,7 +105,33 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 */
-
+        textSwitcher = (TextSwitcher) findViewById(R.id.textSWitcher_1);
+        textSwitcher.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                TextView textView = new TextView(MainActivity.this);
+                textView.setTextSize(10);
+                textView.setTextColor(Color.YELLOW);
+                return textView;
+            }
+        });
+        new Thread() {
+            @Override
+            public void run() {
+                while (true) {
+                    Message message = mhandler.obtainMessage();
+                    message.obj = 0;
+                    mhandler.sendMessage(message);
+                    try {
+                        sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }.start();
+        changeStatusBarTextImgColor(true);
+//*****************************************************************************************************************************************************
         Mqtt_init();
         startReconnect();
 
@@ -102,26 +139,26 @@ public class MainActivity extends AppCompatActivity {
             @SuppressLint("SetTextI18n")
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                switch (msg.what){
+                switch (msg.what) {
                     case 1: //开机校验更新回传
                         break;
                     case 2:  // 反馈回传
 
                         break;
                     case 3:  //MQTT 收到消息回传   UTF8Buffer msg=new UTF8Buffer(object.toString());
-                        Toast.makeText(MainActivity.this,msg.obj.toString() ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, msg.obj.toString(), Toast.LENGTH_SHORT).show();
                         text_1.setText(msg.obj.toString());
                         break;
                     case 30:  //连接失败
-                        Toast.makeText(MainActivity.this,"连接失败" ,Toast.LENGTH_SHORT).show();
+                        Toast.makeText(MainActivity.this, "连接失败", Toast.LENGTH_SHORT).show();
                         break;
                     case 31:   //连接成功
-                        Toast.makeText(MainActivity.this,"连接成功" ,Toast.LENGTH_SHORT).show();
-                          try {
-                             client.subscribe(mqtt_sub_topic,1);//java库 订阅
-                          } catch (MqttException e) {
-                    e.printStackTrace();
-                }
+                        Toast.makeText(MainActivity.this, "连接成功", Toast.LENGTH_SHORT).show();
+                        try {
+                            client.subscribe(mqtt_sub_topic, 1);//java库 订阅
+                        } catch (MqttException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     default:
                         break;
@@ -129,8 +166,12 @@ public class MainActivity extends AppCompatActivity {
             }
         };
     }
-    private void Mqtt_init()
-    {
+
+    private void next(View scource){
+        textSwitcher.setText(string[curStr = ( curStr++ % string.length )]);
+    }
+
+    private void Mqtt_init() {
         try {
             //host为主机名，test为clientid即连接MQTT的客户端ID，一般以客户端唯一标识符表示，MemoryPersistence设置clientid的保存形式，默认为以内存保存
             client = new MqttClient(host, mqtt_id,
@@ -155,12 +196,14 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("connectionLost----------");
                     //startReconnect();
                 }
+
                 @Override
                 public void deliveryComplete(IMqttDeliveryToken token) {
                     //publish后会执行到这里
                     System.out.println("deliveryComplete---------"
                             + token.isComplete());
                 }
+
                 @Override
                 public void messageArrived(String topicName, MqttMessage message)
                         throws Exception {
@@ -176,12 +219,26 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 界面设置状态栏字体颜色
+     */
+    public void changeStatusBarTextImgColor(boolean isBlack) {
+        if (isBlack) {
+            //设置状态栏黑色字体
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        } else {
+            //恢复状态栏白色字体
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        }
+    }
+
     private void Mqtt_connect() {
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    if(!(client.isConnected()) )  //如果还未连接
+                    if (!(client.isConnected()))  //如果还未连接
                     {
                         client.connect(options);
                         Message msg = new Message();
@@ -197,6 +254,7 @@ public class MainActivity extends AppCompatActivity {
             }
         }).start();
     }
+
     private void startReconnect() {
         scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(new Runnable() {
@@ -208,8 +266,8 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 0 * 1000, 10 * 1000, TimeUnit.MILLISECONDS);
     }
-    private void publishmessageplus(String topic,String message2)
-    {
+
+    private void publishmessageplus(String topic, String message2) {
         if (client == null || !client.isConnected()) {
             return;
         }
@@ -218,7 +276,7 @@ public class MainActivity extends AppCompatActivity {
         try {
 
 
-            client.publish(topic,message);
+            client.publish(topic, message);
         } catch (MqttException e) {
 
             e.printStackTrace();
