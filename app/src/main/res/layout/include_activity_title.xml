@@ -11,41 +11,29 @@
         android:src="@drawable/back_cat">
 
     </ImageView>
-    <LinearLayout
+    <TextView
+        android:id="@+id/tv_title"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:layout_weight="9">
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:gravity="center_vertical"
-            android:layout_weight="6"
-            android:text="MQTT测试猫"
-            android:textStyle="bold"
-            android:textSize="15dp" >
-        </TextView>
+        android:gravity="center_vertical"
+        android:layout_weight="6"
+        android:text="MQTT调试"
+        android:textStyle="bold"
+        android:textSize="15dp" >
+    </TextView>
 
-        <TextSwitcher
-            android:id="@+id/textSWitcher_1"
-            android:layout_width="wrap_content"
-            android:layout_marginTop="2dp"
-            android:layout_marginBottom="2dp"
-            android:layout_height="30dp"
-            android:layout_weight="2"
-            android:inAnimation="@anim/in_animation"
-            android:outAnimation="@anim/out_animation"
-            android:onClick="next">
-        </TextSwitcher>
-       <Button
-           android:layout_width="40dp"
-           android:layout_height="match_parent"
-           android:id="@+id/next"
-           android:background="@drawable/setting_1">
+    <TextSwitcher
+        android:id="@+id/textSWitcher_1"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginBottom="2dp"
+        android:layout_height="30dp"
+        android:layout_weight="3"
+        android:inAnimation="@anim/in_animation"
+        android:outAnimation="@anim/out_animation"
+        android:onClick="next">
+    </TextSwitcher>
 
-       </Button>
-    </LinearLayout>
 </LinearLayout>
 
 
