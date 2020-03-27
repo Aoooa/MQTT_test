@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
         Boolean First = sp.contains("FirstUse");
         if(First){
             userName = sp.getString("name","123456");
-            Toast.makeText(MainActivity.this,userName,Toast.LENGTH_SHORT).show();
             passWord = sp.getString("pasw","123456");
             mqtt_id = sp.getString("id","app/test");
             host = sp.getString("host","tcp://0.0.0.0:1883");

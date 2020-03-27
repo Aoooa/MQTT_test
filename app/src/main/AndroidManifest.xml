@@ -6,7 +6,7 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/back_cat"
-        android:label="MQTT测试"
+        android:label="MQTT调试猫"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
