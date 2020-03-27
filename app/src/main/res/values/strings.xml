@@ -1,5 +1,9 @@
 <resources>
     <string name="app_name">MQTT_test</string>
+    <string name="messages_header" />
+    <string name="signature_title" />
+    <string name="reply_title" />
+    <string name="sync_header" />
     <string-array name="res_spin">
         <item>设备一</item>
         <item>设备二</item>
