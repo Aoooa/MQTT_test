@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.mqtt_test"
-        minSdkVersion 17
+        minSdkVersion 21
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -33,4 +33,5 @@ dependencies {
     implementation files('libs/org.eclipse.paho.client.mqttv3-1.2.0.jar')
     implementation 'androidx.navigation:navigation-fragment:2.2.1'
     implementation 'androidx.navigation:navigation-ui:2.2.1'
+    implementation 'com.nightonke:boommenu:2.0.4'
 }

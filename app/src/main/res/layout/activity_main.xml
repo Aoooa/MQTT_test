@@ -56,7 +56,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:hint="订阅的主题">
+                android:hint="订阅的主题"
+                android:background="@drawable/edittext_translucent">
 
                </EditText>
             <Button
@@ -74,7 +75,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:hint="主题">
+                android:hint="主题"
+                android:background="@drawable/edittext_translucent">
 
             </EditText>
 
@@ -83,7 +85,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp"
-                android:hint="主题的内容">
+                android:hint="主题的内容"
+                android:background="@drawable/edittext_translucent">
 
             </EditText>
 
@@ -99,6 +102,26 @@
             </Button>
 
         </LinearLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/float_button"
+                    android:id="@+id/list_1"
+                    android:src="@drawable/list_1"
+                    app:borderWidth="0dp"
+                    app:elevation="8dp"
+                    app:pressedTranslationZ="20dp"
+                    app:rippleColor="#33728dff"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="50dp"
+                    android:layout_marginRight="20dp">
+
+                </com.google.android.material.floatingactionbutton.FloatingActionButton>
+        </RelativeLayout>
 
     </LinearLayout>
 

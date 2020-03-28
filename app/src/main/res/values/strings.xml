@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MQTT_test</string>
+    <string name="app_name">MQTT调试猫</string>
     <string name="messages_header" />
     <string name="signature_title" />
     <string name="reply_title" />
