@@ -97,7 +97,7 @@
                 android:layout_margin="10dp"
                 android:layout_gravity="center_horizontal"
                 android:text="发送"
-                android:background="#f3f9f1">
+                android:background="@drawable/button_style">
 
             </Button>
 
@@ -108,7 +108,6 @@
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/float_button"
                     android:id="@+id/list_1"
                     android:src="@drawable/list_1"
                     app:borderWidth="0dp"

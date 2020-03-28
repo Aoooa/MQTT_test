@@ -2,7 +2,5 @@
 <resources>
     <color name="colorPrimary">#f0f0f4</color>
     <color name="colorPrimaryDark">#f0f0f4</color>
-    <color name="colorAccent">#03DAC5</color>
-    <color name="float_button_nor">#3C9DD0</color>
-    <color name="float_button_pre">#034569</color>
+    <color name="colorAccent">#706caa</color>
 </resources>

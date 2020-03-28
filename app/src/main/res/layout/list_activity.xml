@@ -1,24 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="horizontal">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".sub_activity">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:ignore="MissingConstraints">
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_gravity="left"
+            android:gravity="center_vertical"
+            android:layout_marginLeft="10dp"
+            android:textSize="8pt"
+            android:singleLine="true"
+            android:background="@drawable/text_back"
+            />
+        <!--gravity属性是用来设置文本的对齐方式-->
+        <TextView
+            android:id="@+id/user_id"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:gravity="center_vertical"
+            android:layout_toRightOf="@id/user_name"
 
-    <TextView
-        android:id="@+id/user_name"
-        android:layout_width="180dp"
-        android:layout_height="30dp"
-        android:layout_gravity="left"
-        android:textSize="10pt"
-        android:singleLine="true"
-        />
-    <!--gravity属性是用来设置文本的对齐方式-->
-    <TextView
-        android:id="@+id/user_id"
-        android:layout_width="180dp"
-        android:layout_height="30dp"
-        android:gravity="right"
-        android:textSize="10pt"
-        />
+            android:textSize="8pt"
+            />
+        <Button
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:id="@+id/bu_3"
+            android:layout_alignParentRight="true"
+            android:background="@drawable/delet">
 
-</LinearLayout>
+        </Button>
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

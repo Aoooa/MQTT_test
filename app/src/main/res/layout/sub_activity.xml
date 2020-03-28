@@ -4,28 +4,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity">
+    tools:context=".sub_activity">
     <include android:id="@+id/list_avtivity"
         layout="@layout/list_activity"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="horizontal">
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="列表">
+        android:orientation="vertical">
 
-        </TextView>
-
-        <ListView
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/list"
-            android:scrollbars="vertical"
-            android:drawSelectorOnTop="false">
+            android:layout_height="40dp"
+            android:background="@color/colorPrimary">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="主题订阅"
+                android:textSize="20dp"
+                android:textStyle="bold"
+                android:layout_marginVertical="0dp"
+                android:layout_centerInParent="true">
 
-        </ListView>
+            </TextView>
+        </RelativeLayout>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <EditText
+                    android:layout_width="330dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/edit_4"
+                    android:background="@drawable/edittext_translucent"
+                    android:layout_marginTop="15dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_centerVertical="true"
+                    android:hint="输入需要订阅的主题名称">
 
-    </LinearLayout>
-</androidx.constraintlayout.widget.ConstraintLayout>
+                </EditText>
+                <Button
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/add_1"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/add_1">
+
+                </Button>
+            </RelativeLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/list_back">
+
+                <ListView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/list"
+                    android:scrollbars="vertical"
+                    android:fadeScrollbars="true"
+                    android:transcriptMode="alwaysScroll"
+                    android:dividerHeight="10dp"
+                    android:divider="@null"
+                    android:drawSelectorOnTop="false">
+
+                </ListView>
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
