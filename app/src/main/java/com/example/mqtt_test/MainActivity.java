@@ -51,10 +51,11 @@ public class MainActivity extends AppCompatActivity {
     public static String userName = "app";
     public static String passWord = "123456";
     public static String mqtt_id = "app/test";
-    private String mqtt_sub_topic = "mqtt/test";
-    private String mqtt_pub_topic = "mqtt/test";
+    public String mqtt_sub_topic = "mqtt/test";
+    public String mqtt_pub_topic = "mqtt/test";
+    public static String[] sub_list = {"mqtt/test"};
     private ScheduledExecutorService scheduler;
-    private MqttClient client;
+    public MqttClient client;
     private MqttConnectOptions options;
     private Handler handler;
     private int mqtt_connect_symbol = 0;
@@ -63,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
     private String[] mContext = {
             "未连接",
             "已连接",
-            "#be002f"
     };
     private int mIndex = 0;
     @SuppressLint("HandlerLeak")
@@ -74,8 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         View_Init();
         changeStatusBarTextImgColor(true);
-        Mqtt_init();
-        startReconnect();
+
 
         SharedPreferences sp = getSharedPreferences("data", Context.MODE_PRIVATE);
         Boolean First = sp.contains("FirstUse");
@@ -88,31 +87,12 @@ public class MainActivity extends AppCompatActivity {
         else {
             getSharePreferences();
         }
-/*
-        Resources res = getResources();
-        String[] spin_list = res.getStringArray(R.array.res_spin);//把res_spin的内容添加到数组中
-        spin_1 = (Spinner) findViewById(R.id.spin_1);
-        final ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, spin_list);
-        spin_1.setAdapter(adapter);
-        spin_1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this,"你选择了" + id,Toast.LENGTH_SHORT).show();
-                spin_id = id;
-                Mqtt_init();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-        */
+        Mqtt_init();
+        startReconnect();
         handler = new Handler() {
             @SuppressLint("SetTextI18n")
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
-                final String edit_sub_correct = edit_3.getText().toString();
                 switch (msg.what) {
                     case 1: //开机校验更新回传
                         break;
@@ -130,7 +110,7 @@ public class MainActivity extends AppCompatActivity {
                         mqtt_connect_symbol = 1;
                         mTextSwicher.setText(mContext[1]);
                         try {
-                            client.subscribe("app/test", 1);
+                            client.subscribe("mqtt/test", 1);
                         } catch (MqttException e) {
                             e.printStackTrace();
                         }
@@ -165,7 +145,7 @@ public class MainActivity extends AppCompatActivity {
                 public void connectionLost(Throwable cause) {
                     //连接丢失后，一般在这里面进行重连
                     System.out.println("connectionLost----------");
-                    //startReconnect();
+                    startReconnect();
                 }
 
                 @Override
@@ -182,7 +162,6 @@ public class MainActivity extends AppCompatActivity {
                     System.out.println("messageArrived----------");
                     Message msg = new Message();
                     msg.what = 3;   //收到消息标志位
-                    mqtt_sub_topic_correct = topicName;
                     msg.obj = message.toString();
                     handler.sendMessage(msg);    // hander 回传
                 }
@@ -257,7 +236,22 @@ public class MainActivity extends AppCompatActivity {
         if(resultCode==1){
             Mqtt_init();
         }
+        if(resultCode == 2) {
+            Toast.makeText(MainActivity.this,"sub成功",Toast.LENGTH_SHORT).show();
+            subscribe();
+        }
     }
+
+    public void subscribe(){
+        for(int i = 0;i < sub_list.length;i++){
+            try {
+                client.subscribe(sub_list[i], 1);
+            } catch (MqttException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
     private void getSharePreferences() {
         @SuppressLint("WrongConstant")
         SharedPreferences preferences = getSharedPreferences("data",MainActivity.MODE_PRIVATE);
@@ -269,6 +263,7 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("id",MainActivity.mqtt_id);
         editor.commit();
     }
+
     private void View_Init() {
         edit_1 = findViewById(R.id.edit_1);
         edit_2 = findViewById(R.id.edit_2);
@@ -328,6 +323,7 @@ public class MainActivity extends AppCompatActivity {
         mTextSwicher.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Mqtt_init();
                 Toast.makeText(MainActivity.this,mContext[mqtt_connect_symbol],Toast.LENGTH_SHORT).show();
             }
         });
@@ -346,7 +342,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent();
                 intent.setClass(MainActivity.this, sub_activity.class);
-                startActivityForResult(intent,1);
+                startActivityForResult(intent,2);
                 overridePendingTransition(R.anim.open_in_animation_btt,R.anim.open_out_animation_btt);
             }
         });
